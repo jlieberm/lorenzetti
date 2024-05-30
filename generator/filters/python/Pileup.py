@@ -21,6 +21,7 @@ class Pileup( Cpp ):
 
   def __init__( self, name, gen, 
                 EtaMax       : float=1.4,
+                EtaMin       : float=0.0,
                 PileupAvg    : float=0,
                 PileupSigma  : float=0,
                 BunchIdStart : int=-8,
@@ -35,6 +36,7 @@ class Pileup( Cpp ):
     self.__gen = gen
 
     self.setProperty( "EtaMax"        , EtaMax       )
+    self.setProperty( "EtaMin"        , EtaMin       )
     self.setProperty( "PileupAvg"     , PileupAvg    )
     self.setProperty( "PileupSigma"   , PileupSigma  )
     self.setProperty( "BunchIdStart"  , BunchIdStart )

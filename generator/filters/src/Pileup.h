@@ -23,6 +23,7 @@ namespace generator{
       int m_bc_id_start;
       int m_bc_id_end;
       float m_etaMax;
+      float m_etaMin;
       float m_nPileupAvg;
       float m_nPileupSigma;
       float m_delta_eta;
