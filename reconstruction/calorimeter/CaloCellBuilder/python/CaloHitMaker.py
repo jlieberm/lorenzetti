@@ -17,6 +17,7 @@ class CaloHitMaker( Cpp ):
                 DetailedHistograms   : bool   = False,
                 HistogramPath        : str    = "/CaloHitMaker",
                 SamplingNoiseStd     : float  = 0,
+                DoSlicedHIT          : bool   = False,
               ):
                     
     Cpp.__init__(self, ROOT.CaloHitMaker(name) )
@@ -38,6 +39,7 @@ class CaloHitMaker( Cpp ):
     self.setProperty( "DetailedHistograms"      , DetailedHistograms          )
     self.setProperty( "HistogramPath"           , HistogramPath               )
     self.setProperty( "OutputLevel"             , OutputLevel                 )
+    self.setProperty( "DoSlicedHIT"             , DoSlicedHIT                 )
 
  
 

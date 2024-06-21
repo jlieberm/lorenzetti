@@ -41,6 +41,7 @@ CaloHitMaker::CaloHitMaker( std::string name ) :
   declareProperty( "BunchIdEnd"               , m_bcid_end=8                          );
   declareProperty( "BunchDuration"            , m_bc_duration=25                      );
   declareProperty( "OutputLevel"              , m_outputLevel=1                       );
+  declareProperty( "DoSlicedHIT"              , m_doSlicedHIT = false                 );
   declareProperty( "DetailedHistograms"       , m_detailedHistograms=false            );
   declareProperty( "HistogramPath"            , m_histPath="/CaloHitMaker"            );
   declareProperty( "SamplingNoiseStd"         , m_noiseStd=0                          );
@@ -96,7 +97,7 @@ StatusCode CaloHitMaker::pre_execute( EventContext &ctx ) const
 
   float deltaEta = std::abs(m_etaBins[1] - m_etaBins[0]);
   float deltaPhi = std::abs(m_phiBins[1] - m_phiBins[0]);
-
+  std::cout << "Juan - doSlicedHIT: " << m_doSlicedHIT << std::endl;
   //
   // Prepare all sensitive objects like a two dimensional histogram
   //

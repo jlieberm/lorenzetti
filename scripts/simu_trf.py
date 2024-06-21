@@ -65,10 +65,11 @@ try:
                      OutputTruthKey   = recordable("Particles"),
                      OutputSeedKey    = recordable("Seeds"    ),
                      )
-
+  from RootStreamBuilder import RootStreamHITFlags as flags
   from CaloCellBuilder import CaloHitBuilder
   calorimeter = CaloHitBuilder("CaloHitBuilder",
                                 HistogramPath = "Expert/Hits",
+                                DoSlicedHIT   = flags.doSlicedHIT,
                                 OutputLevel   = outputLevel,
                                 InputEventKey = recordable("Events"),
                                 OutputHitsKey = recordable("Hits")

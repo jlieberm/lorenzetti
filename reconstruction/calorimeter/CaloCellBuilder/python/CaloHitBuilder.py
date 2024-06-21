@@ -18,6 +18,7 @@ class CaloHitBuilder( Logger ):
                 InputEventKey  : str,
                 OutputHitsKey  : str,
                 HistogramPath  : str="Expert", 
+                DoSlicedHIT    : bool=False,
                 OutputLevel    : int=LoggingLevel.toC('INFO'),
               ):
 
@@ -27,6 +28,7 @@ class CaloHitBuilder( Logger ):
     self.OutputLevel   = OutputLevel
     self.OutputHitsKey = OutputHitsKey
     self.OutputCollectionKeys = []
+    self.DoSlicedHIT = DoSlicedHIT
 
 
   def configure(self):
@@ -42,6 +44,7 @@ class CaloHitBuilder( Logger ):
                               SamplingNoiseStd        = samp.Noise, # TOF selection
                               HistogramPath           = self.HistogramPath + '/' + samp.name(),
                               OutputLevel             = self.OutputLevel,
+                              DoSlicedHIT             = self.DoSlicedHIT,
                               DetailedHistograms      = False, # Use True when debug with only one thread
                               )
                               

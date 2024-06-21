@@ -69,7 +69,8 @@ class CaloHitMaker : public Gaugi::Algorithm
     std::string m_histPath;
     /*! detailed histogram flags */
     bool m_detailedHistograms;
-
+    /*! key to do sliced HIT recontructrion in eta*/
+    bool m_doSlicedHIT;
     unsigned int m_nEtaBins;
     unsigned int m_nPhiBins;
 };
