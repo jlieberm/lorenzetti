@@ -42,6 +42,8 @@ CaloHitMaker::CaloHitMaker( std::string name ) :
   declareProperty( "BunchDuration"            , m_bc_duration=25                      );
   declareProperty( "OutputLevel"              , m_outputLevel=1                       );
   declareProperty( "DoSlicedHIT"              , m_doSlicedHIT = false                 );
+  declareProperty( "EtaMax"                   , m_etaMax=0                            );
+  declareProperty( "EtaMin"                   , m_etaMin=3.2                          );
   declareProperty( "DetailedHistograms"       , m_detailedHistograms=false            );
   declareProperty( "HistogramPath"            , m_histPath="/CaloHitMaker"            );
   declareProperty( "SamplingNoiseStd"         , m_noiseStd=0                          );
@@ -97,7 +99,6 @@ StatusCode CaloHitMaker::pre_execute( EventContext &ctx ) const
 
   float deltaEta = std::abs(m_etaBins[1] - m_etaBins[0]);
   float deltaPhi = std::abs(m_phiBins[1] - m_phiBins[0]);
-  std::cout << "Juan - doSlicedHIT: " << m_doSlicedHIT << std::endl;
   //
   // Prepare all sensitive objects like a two dimensional histogram
   //
@@ -119,6 +120,8 @@ StatusCode CaloHitMaker::pre_execute( EventContext &ctx ) const
                                      (CaloSampling)m_sampling,
                                      (Detector)m_detector,
                                      m_bc_duration, m_bcid_start, m_bcid_end );
+      if (m_doSlicedHIT && (std::abs(hit->eta()) < m_etaMin || std::abs(hit->eta()) > m_etaMax))
+        continue;
       if( !collection->insert( hit->hash(), hit) )
       {
         MSG_FATAL( "It is not possible to include hit hash ("<< hit->hash() << ") into the collection. hash already exist.");
@@ -167,6 +170,8 @@ StatusCode CaloHitMaker::execute( EventContext &ctx , const G4Step *step ) const
 
   if(phiBin < 0)
     return StatusCode::SUCCESS;
+  if (m_doSlicedHIT && (std::abs(eta) < m_etaMin || std::abs(eta)+0.05 > m_etaMax))
+    return StatusCode::SUCCESS;
 
   int bin = m_nPhiBins * etaBin + phiBin;
 
@@ -176,7 +181,7 @@ StatusCode CaloHitMaker::execute( EventContext &ctx , const G4Step *step ) const
     // hit->fill( step );
     hit->fill( step , 1*m_noiseStd); // hit with tof selection sensible by 1*sigma of sampling noise.
   }else{
-    MSG_FATAL( "Its not possible to retrieve the hit. Bin ("<< bin << ") not exist");
+    MSG_FATAL( "Its not possible to retrieve the hit. Bin ("<< bin << ") not exist, with eta: " << eta);
   }
   
   return StatusCode::SUCCESS;

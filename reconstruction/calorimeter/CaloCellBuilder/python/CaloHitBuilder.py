@@ -19,6 +19,9 @@ class CaloHitBuilder( Logger ):
                 OutputHitsKey  : str,
                 HistogramPath  : str="Expert", 
                 DoSlicedHIT    : bool=False,
+                EtaMin         : float=0,
+                EtaMax         : float=3.2,
+                OnlyForward    : bool=False,
                 OutputLevel    : int=LoggingLevel.toC('INFO'),
               ):
 
@@ -29,6 +32,9 @@ class CaloHitBuilder( Logger ):
     self.OutputHitsKey = OutputHitsKey
     self.OutputCollectionKeys = []
     self.DoSlicedHIT = DoSlicedHIT
+    self.EtaMin = EtaMin
+    self.EtaMax = EtaMax
+    self.OnlyForward = OnlyForward
 
 
   def configure(self):
@@ -37,6 +43,7 @@ class CaloHitBuilder( Logger ):
     
 
     for samp in self.__detector.samplings:
+          if self.OnlyForward and samp.Sampling <= 10: continue
 
           MSG_INFO(self, "Create new CaloHitMaker and dump all hits into %s collection", samp.CollectionKey)
           alg = CaloHitMaker("CaloHitMaker", samp,
@@ -45,6 +52,8 @@ class CaloHitBuilder( Logger ):
                               HistogramPath           = self.HistogramPath + '/' + samp.name(),
                               OutputLevel             = self.OutputLevel,
                               DoSlicedHIT             = self.DoSlicedHIT,
+                              EtaMax                  = self.EtaMax,
+                              EtaMin                  = self.EtaMin,
                               DetailedHistograms      = False, # Use True when debug with only one thread
                               )
                               

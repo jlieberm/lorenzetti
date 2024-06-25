@@ -71,6 +71,8 @@ class CaloHitMaker : public Gaugi::Algorithm
     bool m_detailedHistograms;
     /*! key to do sliced HIT recontructrion in eta*/
     bool m_doSlicedHIT;
+    float m_etaMax;
+    float m_etaMin;
     unsigned int m_nEtaBins;
     unsigned int m_nPhiBins;
 };

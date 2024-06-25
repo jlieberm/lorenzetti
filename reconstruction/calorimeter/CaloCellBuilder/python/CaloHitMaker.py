@@ -17,6 +17,8 @@ class CaloHitMaker( Cpp ):
                 DetailedHistograms   : bool   = False,
                 HistogramPath        : str    = "/CaloHitMaker",
                 SamplingNoiseStd     : float  = 0,
+                EtaMax               : float  = 0,
+                EtaMin               : float  = 3.2,
                 DoSlicedHIT          : bool   = False,
               ):
                     
@@ -40,6 +42,8 @@ class CaloHitMaker( Cpp ):
     self.setProperty( "HistogramPath"           , HistogramPath               )
     self.setProperty( "OutputLevel"             , OutputLevel                 )
     self.setProperty( "DoSlicedHIT"             , DoSlicedHIT                 )
+    self.setProperty( "EtaMax"                  , EtaMax                      )
+    self.setProperty( "EtaMin"                  , EtaMin                      )
 
  
 

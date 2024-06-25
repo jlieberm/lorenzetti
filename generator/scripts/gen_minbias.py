@@ -82,7 +82,7 @@ try:
   from filters import Pileup
   pileup = Pileup( "MinimumBias",
                  Pythia8("Generator", File=minbias_file, Seed=args.seed),
-                 EtaMax         = 1.4,
+                 EtaMax         = 3.2,
                  Select         = 2,
                  PileupAvg      = args.pileupAvg,
                  PileupSigma    = args.pileupSigma,
