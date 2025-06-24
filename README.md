@@ -15,7 +15,7 @@ We welcome everyone to contribute!
 
 ## Citations
 
-Please cite [Lorenzetti Showers - A general-purpose framework for supporting signal reconstruction and triggering with calorimeters]([url](https://doi.org/10.1016/j.cpc.2023.108671)) and  [![DOI](https://zenodo.org/badge/370090835.svg)](https://zenodo.org/badge/latestdoi/370090835) if you use the software.
+Please cite [Lorenzetti Showers - A general-purpose framework for supporting signal reconstruction and triggering with calorimeters](([url](https://doi.org/10.1016/j.cpc.2023.108671)) and  [![DOI](https://zenodo.org/badge/370090835.svg)](https://zenodo.org/badge/latestdoi/370090835) if you use the software.
 
 [//]: # (and/or the applicable papers.)
 
