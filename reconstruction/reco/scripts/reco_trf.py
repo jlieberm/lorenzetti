@@ -13,6 +13,7 @@ from CaloClusterBuilder import CaloClusterMaker
 from CaloRingsBuilder   import CaloRingsBuilderCfg
 from EgammaBuilder      import ElectronBuilderCfg
 from RootStreamBuilder  import RootStreamAODMaker
+from CaloClusterBuilder import CaloClusterFlags as flags
 
 from reco.reco_job import merge_args, update_args, create_parallel_job
 
@@ -76,6 +77,7 @@ def main(events : List[int],
                                 OutputClusterKey     = recordable("Clusters"),
                                 # other configs
                                 HistogramPath        = "Expert/Clusters",
+                                doBlindReco          = flags.doBlindReco,
                                 OutputLevel          = outputLevel )
 
 
@@ -124,7 +126,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     args = update_args(args)
     pool = create_parallel_job(args)
-    pool( main, 
+    pool( main,
          logging_level    = args.output_level,
          command          = args.command
          )

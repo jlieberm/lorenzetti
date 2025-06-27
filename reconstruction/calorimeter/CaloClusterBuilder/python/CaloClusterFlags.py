@@ -9,3 +9,4 @@ class CaloClusterFlags(EnumStringification):
     EtaWindow        = 0.4
     PhiWindow        = 0.4
     doForwardMoments = False
+    doBlindReco      = False

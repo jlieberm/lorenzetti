@@ -19,18 +19,19 @@ CaloClusterMaker::CaloClusterMaker( std::string name ) :
   Algorithm()
 {
   // Key inputs
-  declareProperty( "InputCellsKey"       , m_cellsKey="Cells"                );
-  declareProperty( "InputSeedsKey"       , m_seedKey="Seeds"                 );
+  declareProperty( "InputCellsKey"        , m_cellsKey="Cells"                );
+  declareProperty( "InputSeedsKey"        , m_seedKey="Seeds"                 );
   // Key outputs
-  declareProperty( "OutputClusterKey"    , m_clusterKey="Clusters"           );
+  declareProperty( "OutputClusterKey"     , m_clusterKey="Clusters"           );
   // Algorithm configuration
-  declareProperty( "EtaWindow"           , m_etaWindow=0.4                   );
-  declareProperty( "PhiWindow"           , m_phiWindow=0.4                   );
-  declareProperty( "DoForwardMoments"    , m_doForwardMoments = false        );
-  declareProperty( "OutputLevel"         , m_outputLevel=1                   );
-  declareProperty( "HistogramPath"       , m_histPath="Clusters"             );
-  declareProperty( "MinCenterEnergy"     , m_minCenterEnergy=15*GeV          );
-  declareProperty( "OutputLevel"         , m_outputLevel=1                   );
+  declareProperty( "EtaWindow"            , m_etaWindow=0.4                   );
+  declareProperty( "PhiWindow"            , m_phiWindow=0.4                   );
+  declareProperty( "DoForwardMoments"     , m_doForwardMoments = false        );
+  declareProperty( "DoBlindReconstruction", m_doBlindRecontruction = false    );
+  declareProperty( "OutputLevel"          , m_outputLevel=1                   );
+  declareProperty( "HistogramPath"        , m_histPath="Clusters"             );
+  declareProperty( "MinCenterEnergy"      , m_minCenterEnergy=15*GeV          );
+  declareProperty( "OutputLevel"          , m_outputLevel=1                   );
 }
 
 //!=====================================================================
@@ -48,6 +49,7 @@ StatusCode CaloClusterMaker::initialize()
   //setMsgLevel(m_outputLevel);
   m_showerShapes = new ShowerShapes( "ShowerShapes" );
   m_showerShapes->setForwardMoments(m_doForwardMoments);
+  std::cout << "BlindReco? " << m_doBlindRecontruction << std::endl;
   return StatusCode::SUCCESS;
 }
 

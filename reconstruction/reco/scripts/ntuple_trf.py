@@ -90,6 +90,5 @@ if __name__ == "__main__":
     args = update_args(args)
     pool = create_parallel_job(args)
     pool( main, 
-         logging_level    = args.output_level,
-         command          = args.command
+         logging_level    = args.output_level
          )

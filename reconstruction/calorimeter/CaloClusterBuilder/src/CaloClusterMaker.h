@@ -58,6 +58,7 @@ class CaloClusterMaker : public Gaugi::Algorithm
     float m_etaWindow;
     float m_phiWindow;
     bool m_doForwardMoments;
+    bool m_doBlindRecontruction;
     std::string m_histPath;
 
     // Shower shaper calculator

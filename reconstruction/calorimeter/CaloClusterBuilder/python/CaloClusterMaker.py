@@ -16,6 +16,7 @@ class CaloClusterMaker( Cpp ):
                 PhiWindow        : float=flags.PhiWindow,
                 MinCenterEnergy  : float=flags.MinCenterEnergy,
                 doForwardMoments : bool=flags.doForwardMoments,
+                doBlindReco      : bool=flags.doBlindReco,
                 OutputLevel      : str=0, 
                 HistogramPath    : str="Expert/Clusters",
               ):
@@ -29,7 +30,7 @@ class CaloClusterMaker( Cpp ):
     self.setProperty( "PhiWindow"            , PhiWindow            )
     self.setProperty( "MinCenterEnergy"      , MinCenterEnergy      )
     self.setProperty( "DoForwardMoments"     , doForwardMoments     )
+    self.setProperty( "DoBlindReconstruction", doBlindReco          )
     self.setProperty( "OutputLevel"          , OutputLevel          ) 
     self.setProperty( "HistogramPath"        , HistogramPath        )
-
 
