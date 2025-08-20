@@ -1,32 +1,37 @@
-! ------------------------------------------------------------
-! Produção de Z com decaimento em e+ e- e emissão de fóton (FSR)
-! ------------------------------------------------------------
-
-! Definições básicas
-Main:numberOfEvents = 10000       ! número de eventos
+! ------------------------------------------
+! pp -> Z/gamma* -> e+ e- com QED FSR ativo
+! ------------------------------------------
+Main:numberOfEvents = 20000
 Main:timesAllowErrors = 1000
 
-! Inicialização: colisão próton-próton em 13 TeV
 Beams:idA = 2212
 Beams:idB = 2212
-Beams:eCM = 13000.0
+Beams:eCM = 13000.
 
-! Processo de produção: Drell-Yan via Z/gamma*
-WeakSingleBoson:ffbar2gmZ = on    ! produção de Z/gamma* a partir de qqbar
+! Produção Drell–Yan
+WeakSingleBoson:ffbar2gmZ = on
 
-! Forçar o decaimento do Z -> e+ e-
+! Forçar Z -> e+ e-
 23:onMode = off
 23:onIfMatch = 11 -11
 
-! Ativar radiação QED (para emissão de fótons do elétron)
-TimeShower:QEDshowerByL = on      ! radiação de léptons carregados
-TimeShower:QEDshowerByQ = off     ! (opcional, desligar QED de quarks se não quiser)
-TimeShower:alphaEMorder = 1       ! usar alpha QED em 1-loop
+! --- GARANTIR CHUVEIRO LIGADO ---
+PartonLevel:FSR = on
 
-! Saída
+! --- QED FSR de léptons ---
+TimeShower:QEDshowerByL = on
+
+! (opcional) desligar QED nos quarks p/ evitar fótons de hadronização
+TimeShower:QEDshowerByQ = off
+
+! Baixar pTmin do QED-FSR de léptons (padrão costuma ser mais alto)
+! Isso aumenta a chance de emissões visíveis.
+TimeShower:pTminChgL = 0.05
+
+! Ordem de alpha_EM (1-loop é suficiente)
+TimeShower:alphaEMorder = 1
+
+! Saídas
 Init:showChangedSettings = on
-Init:showAllParticleData = off
-Next:numberCount = 1000
-Next:numberShowInfo = 1
-Next:numberShowProcess = 1
-Next:numberShowEvent = 1
+Next:numberCount = 2000
+Next:numberShowEvent = 0

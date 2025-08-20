@@ -52,23 +52,14 @@ StatusCode Zrad::execute( generator::Event &ctx )
 
   for (auto part : evt.particles()) 
   {
-    // Is electron and final state?
-    if (part->abs_pid() == 11 && ParticleHelper::isFinal(part.get()) )
+    // Is Photon and final state?
+    if (part->abs_pid() == 22 && ParticleHelper::isFinal(part.get()) )
     {
-      if(part->parents().empty()){
-        continue;
-      }
-
       auto mother = part->parents().at(0);
-      // The mother is Z?
-      if( mother->pid() == 23)
-      {
-        float eta = part->momentum().eta();
-        float pt = part->momentum().pt();
-        if ( std::abs(eta) < m_etaMax && pt > (m_minPt/1.e3) ){
+      if( mother->pid() == 11 ){
           zee.push_back( part.get() );
-        }
-      }// From Z?
+       }
+      
     }// Is electron?
   }
 
