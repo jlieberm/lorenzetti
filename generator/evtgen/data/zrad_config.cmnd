@@ -1,0 +1,32 @@
+! ------------------------------------------------------------
+! Produção de Z com decaimento em e+ e- e emissão de fóton (FSR)
+! ------------------------------------------------------------
+
+! Definições básicas
+Main:numberOfEvents = 10000       ! número de eventos
+Main:timesAllowErrors = 1000
+
+! Inicialização: colisão próton-próton em 13 TeV
+Beams:idA = 2212
+Beams:idB = 2212
+Beams:eCM = 13000.0
+
+! Processo de produção: Drell-Yan via Z/gamma*
+WeakSingleBoson:ffbar2gmZ = on    ! produção de Z/gamma* a partir de qqbar
+
+! Forçar o decaimento do Z -> e+ e-
+23:onMode = off
+23:onIfMatch = 11 -11
+
+! Ativar radiação QED (para emissão de fótons do elétron)
+TimeShower:QEDshowerByL = on      ! radiação de léptons carregados
+TimeShower:QEDshowerByQ = off     ! (opcional, desligar QED de quarks se não quiser)
+TimeShower:alphaEMorder = 1       ! usar alpha QED em 1-loop
+
+! Saída
+Init:showChangedSettings = on
+Init:showAllParticleData = off
+Next:numberCount = 1000
+Next:numberShowInfo = 1
+Next:numberShowProcess = 1
+Next:numberShowEvent = 1
