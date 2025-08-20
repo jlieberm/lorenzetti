@@ -78,6 +78,7 @@ def main(events : List[int],
                                 # other configs
                                 HistogramPath        = "Expert/Clusters",
                                 doBlindReco          = flags.doBlindReco,
+                                MinCenterEnergy      = flags.MinCenterEnergy,
                                 OutputLevel          = outputLevel )
 
 

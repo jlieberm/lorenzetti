@@ -49,7 +49,6 @@ StatusCode CaloClusterMaker::initialize()
   //setMsgLevel(m_outputLevel);
   m_showerShapes = new ShowerShapes( "ShowerShapes" );
   m_showerShapes->setForwardMoments(m_doForwardMoments);
-  std::cout << "BlindReco? " << m_doBlindRecontruction << std::endl;
   return StatusCode::SUCCESS;
 }
 
@@ -135,59 +134,84 @@ StatusCode CaloClusterMaker::post_execute( EventContext &ctx ) const
 
   // Loop over all truth particles (here, we have seeds)
   // for ( const auto part : **particles.ptr() )
-  for ( const auto part : **seeds.ptr() )
-  {
-    const xAOD::CaloCell *hotcell=nullptr;
-    float emaxs2 = 0.0;
+  if (!m_doBlindRecontruction){
+    for ( const auto part : **seeds.ptr() )
+    {
+      const xAOD::CaloCell *hotcell=nullptr;
+      float emaxs2 = 0.0;
 
-    // Searching the hottest cell looking for EM2 layer
-    for (const auto cell : **container.ptr() ){
-
-      const xAOD::CaloDetDescriptor* det = cell->descriptor();
-      
-      // Must be EM2 cells layer
-      if( (det->sampling() != CaloSampling::EMB2) && (det->sampling() != CaloSampling::EMEC2) ) continue;
-
-      // Check if cell is inside 
-      float deltaEta = std::abs( part->eta() - cell->eta() );
-      float deltaPhi = std::abs( CaloPhiRange::diff( part->phi() , cell->phi() ));
-      if (deltaEta < m_etaWindow/2 && deltaPhi < m_phiWindow/2 && cell->e() > emaxs2){
-        hotcell=cell; emaxs2=cell->e();
-      }
-    }
-
-    if(hotcell){
-
-      // Apply simple algorithm to check if most part of energy is not in the edges or not. Applying 0.1 X 0.1 window
-      float etot=0.0;
+      // Searching the hottest cell looking for EM2 layer
       for (const auto cell : **container.ptr() ){
 
-        // Only PS, EM1, EM2 and EM3 cells
-        if( cell->descriptor()->detector()!=Detector::TTEM ) continue;
+        const xAOD::CaloDetDescriptor* det = cell->descriptor();
         
-        float deltaEta = std::abs( hotcell->eta() - cell->eta() );
-        float deltaPhi = std::abs( CaloPhiRange::diff( hotcell->phi() , cell->phi() ));
-        // 0.1 X 0.1 window
-        if (deltaEta < 0.05 && deltaPhi < 0.05){
-          etot+=cell->e();
+        // Must be EM2 cells layer
+        if( (det->sampling() != CaloSampling::EMB2) && (det->sampling() != CaloSampling::EMEC2) ) continue;
+
+        // Check if cell is inside 
+        float deltaEta = std::abs( part->eta() - cell->eta() );
+        float deltaPhi = std::abs( CaloPhiRange::diff( part->phi() , cell->phi() ));
+        if (deltaEta < m_etaWindow/2 && deltaPhi < m_phiWindow/2 && cell->e() > emaxs2){
+          hotcell=cell; emaxs2=cell->e();
         }
       }
 
+      if(hotcell){
 
-      MSG_INFO( "Eletromagnetic energy in 0.1 x 0.1 center in the hotcell is: " << etot );
+        // Apply simple algorithm to check if most part of energy is not in the edges or not. Applying 0.1 X 0.1 window
+        float etot=0.0;
+        for (const auto cell : **container.ptr() ){
 
-      MSG_DEBUG( "Is cluster energy higher than " << m_minCenterEnergy ); 
-      if(etot >= m_minCenterEnergy ){
-        MSG_INFO( "Creating one cluster since the center energy is higher than the energy cut" );
-        xAOD::CaloCluster *clus = new xAOD::CaloCluster( hotcell->e(), hotcell->eta(), hotcell->phi(), m_etaWindow/2., m_phiWindow/2. );
-        clus->setSeed(part);
-        fillCluster( ctx, clus, m_cellsKey );
-        m_showerShapes->execute( ctx, clus );
-        clusters->push_back( clus );
+          // Only PS, EM1, EM2 and EM3 cells
+          if( cell->descriptor()->detector()!=Detector::TTEM ) continue;
+          
+          float deltaEta = std::abs( hotcell->eta() - cell->eta() );
+          float deltaPhi = std::abs( CaloPhiRange::diff( hotcell->phi() , cell->phi() ));
+          // 0.1 X 0.1 window
+          if (deltaEta < 0.05 && deltaPhi < 0.05){
+            etot+=cell->e();
+          }
+        }
+
+
+        MSG_INFO( "Eletromagnetic energy in 0.1 x 0.1 center in the hotcell is: " << etot );
+
+        MSG_DEBUG( "Is cluster energy higher than " << m_minCenterEnergy ); 
+        if(etot >= m_minCenterEnergy ){
+          MSG_INFO( "Creating one cluster since the center energy is higher than the energy cut" );
+          xAOD::CaloCluster *clus = new xAOD::CaloCluster( hotcell->e(), hotcell->eta(), hotcell->phi(), m_etaWindow/2., m_phiWindow/2. );
+          clus->setSeed(part);
+          fillCluster( ctx, clus, m_cellsKey );
+          m_showerShapes->execute( ctx, clus );
+          clusters->push_back( clus );
+        }
+      }else{
+        MSG_DEBUG( "There is no hottest cell for this particle.");
       }
-    }else{
-      MSG_DEBUG( "There is no hottest cell for this particle.");
+
     }
+  }
+  else{ //blind cluster reconstruction activated
+    MSG_INFO("Running in Blind Cluster Reconstruction mode");
+    int dummySeedIndex = 0;
+     for (const auto cell : **container.ptr() ){
+
+        const xAOD::CaloDetDescriptor* det = cell->descriptor();
+        
+        // Must be EM2 cells layer
+        if( (det->sampling() != CaloSampling::EMB2) && (det->sampling() != CaloSampling::EMEC2) ) continue;
+        if (cell->e() > m_minCenterEnergy){
+          MSG_INFO("Creating cluster around cell with energy: " << cell->e() << " - Eta: " << cell->eta() << " - Phi: " << cell->phi());
+          xAOD::CaloCluster *clus = new xAOD::CaloCluster( cell->e(), cell->eta(), cell->phi(), m_etaWindow/2., m_phiWindow/2. );
+          xAOD::Seed *dummySeed = new xAOD::Seed(dummySeedIndex,0,0,0,0);
+          clus->setSeed(dummySeed);
+          dummySeedIndex++;
+          fillCluster( ctx, clus, m_cellsKey );
+          m_showerShapes->execute( ctx, clus );
+          clusters->push_back( clus );
+        } 
+        
+     }  
 
   }
   return StatusCode::SUCCESS;
