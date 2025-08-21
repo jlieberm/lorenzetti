@@ -79,6 +79,7 @@ add_subdirectory( events/EventInfo )
 add_subdirectory( events/TruthParticle )
 add_subdirectory( events/CaloRings )
 add_subdirectory( events/Egamma)
+add_subdirectory( events/Conditions )
 
 # reconstruction package
 add_subdirectory( reconstruction/calorimeter/CaloCellBuilder )

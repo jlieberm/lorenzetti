@@ -8,6 +8,7 @@
 #include "CaloCluster/CaloCluster.h"
 #include "Egamma/Electron.h"
 #include "TruthParticle/TruthParticle.h"
+#include "Conditions/Conditions.h"
 
 #include "GaugiKernel/StatusCode.h"
 #include "GaugiKernel/DataHandle.h"
@@ -67,9 +68,11 @@ class RootStreamAODMaker : public Gaugi::Algorithm
     std::string m_outputRingerKey;
     std::string m_outputTruthKey;
     std::string m_outputElectronKey;
+    std::string m_outputConditionsKey;
 
     bool m_dumpCells;
     int m_outputLevel;
+    bool m_doBlindReco;
 };
 
 #endif

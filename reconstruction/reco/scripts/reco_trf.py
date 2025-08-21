@@ -105,7 +105,9 @@ def main(events : List[int],
                               InputClusterKey  = recordable("Clusters"),
                               InputRingerKey   = recordable("Rings"),
                               InputElectronKey = recordable("Electrons"),
-                              OutputLevel      = outputLevel)
+                              OutputConditionsKey = recordable("Conditions"),
+                              OutputLevel      = outputLevel,
+                              doBlindReco      = flags.doBlindReco)
 
     # sequence
     acc+= cluster

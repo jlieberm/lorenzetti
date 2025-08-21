@@ -3,6 +3,7 @@ __all__ = ["RootStreamAODMaker"]
 from GaugiKernel import Cpp
 from GaugiKernel.macros import *
 from RootStreamBuilder import RootStreamAODFlags as flags
+from CaloClusterBuilder import CaloClusterFlags as caloFlags
 import ROOT
 
 class RootStreamAODMaker( Cpp ):
@@ -22,7 +23,9 @@ class RootStreamAODMaker( Cpp ):
                 OutputRingerKey  : str=None,
                 OutputSeedsKey   : str=None,
                 OutputElectronKey: str=None,
+                OutputConditionsKey: str=None,
                 OutputLevel      : int=0, 
+                doBlindReco      : bool=caloFlags.doBlindReco,
                 NtupleName       : str="CollectionTree",
                 DumpCells        : bool=flags.DumpCells,
               ): 
@@ -42,7 +45,9 @@ class RootStreamAODMaker( Cpp ):
     self.setProperty( "OutputRingerKey" , OutputRingerKey if OutputRingerKey else InputRingerKey    )
     self.setProperty( "OutputSeedsKey"  , OutputSeedsKey if OutputSeedsKey else InputSeedsKey       )
     self.setProperty( "OutputElectronKey", OutputElectronKey if OutputElectronKey else InputElectronKey)
+    self.setProperty( "OutputConditionsKey", OutputConditionsKey)
     
     self.setProperty( "OutputLevel"     , OutputLevel     ) 
     self.setProperty( "NtupleName"      , NtupleName      )
     self.setProperty( "DumpCells"       , DumpCells       )
+    self.setProperty( "DoBlindReconstruction", doBlindReco)

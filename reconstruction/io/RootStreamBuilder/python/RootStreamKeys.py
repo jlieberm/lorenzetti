@@ -19,6 +19,7 @@ valid_keys = [
             "Rings",
             "TruthRings",
             "Electrons",
+            "Conditions"
             ]
 
 def recordable( key ):
