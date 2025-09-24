@@ -36,6 +36,7 @@ RootStreamAODMaker::RootStreamAODMaker( std::string name ) :
   declareProperty( "InputClusterKey"         , m_inputClusterKey="Clusters"           );
   declareProperty( "InputRingerKey"          , m_inputRingerKey="Rings"               );
   declareProperty( "InputElectronKey"        , m_inputElectronKey="Electrons"         );
+  declareProperty( "InputConditionsKey"      , m_inputElectronKey="Conditions"        );
 
   declareProperty( "OutputEventKey"          , m_outputEventKey="EventInfo"           );
   declareProperty( "OutputSeedsKey"          , m_outputSeedsKey="Seeds"               );
@@ -91,7 +92,7 @@ StatusCode RootStreamAODMaker::bookHistograms( SG::EventContext &ctx ) const
   tree->Branch( ("CaloRingsContainer_"     + m_outputRingerKey).c_str()      , &container_rings      );
   tree->Branch( ("CaloClusterContainer_"   + m_outputClusterKey).c_str()     , &container_clus       );
   tree->Branch( ("ElectronContainer_"      + m_outputElectronKey).c_str()     , &container_electron  );
-  tree->Branch( ("ConditionsContainer_" + m_outputConditionsKey).c_str()      , &container_conditions);
+  tree->Branch( ("ConditionsContainer_"    + m_outputConditionsKey).c_str()   , &container_conditions);
   if(m_dumpCells){
     tree->Branch(  ("CaloCellContainer_"          + m_outputCellsKey).c_str()   , &container_cells      );
     tree->Branch(  ("CaloDetDescriptorContainer_" + m_outputCellsKey).c_str()   , &container_descriptor );

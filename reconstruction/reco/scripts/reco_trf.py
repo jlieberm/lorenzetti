@@ -9,6 +9,7 @@ from expand_folders     import expand_folders
 from GaugiKernel        import LoggingLevel, get_argparser_formatter
 from GaugiKernel        import ComponentAccumulator
 from RootStreamBuilder  import RootStreamESDReader, recordable
+from ConditionsBuilder  import ConditionsMaker
 from CaloClusterBuilder import CaloClusterMaker
 from CaloRingsBuilder   import CaloRingsBuilderCfg
 from EgammaBuilder      import ElectronBuilderCfg
@@ -68,6 +69,11 @@ def main(events : List[int],
                               )
     ESD.merge(acc)
 
+    conditions = ConditionsMaker("ConditionsMaker",
+                                 OutputConditionsKey    = recordable("Conditions"),
+                                 doBlindReco            = flags.doBlindReco,
+                                 OutputLevel            = outputLevel,
+                                 )
 
     # build cluster for all seeds
     cluster = CaloClusterMaker( "CaloClusterMaker",
@@ -105,11 +111,12 @@ def main(events : List[int],
                               InputClusterKey  = recordable("Clusters"),
                               InputRingerKey   = recordable("Rings"),
                               InputElectronKey = recordable("Electrons"),
-                              OutputConditionsKey = recordable("Conditions"),
+                              InputConditionsKey = recordable("Conditions"),
                               OutputLevel      = outputLevel,
                               doBlindReco      = flags.doBlindReco)
 
     # sequence
+    acc+= conditions
     acc+= cluster
     acc+= rings
     acc+= hypo

@@ -20,7 +20,7 @@ namespace xAOD{
       /*! Destructor */
       ~Conditions()=default;
       /*! The eta center of the cluster given by the simulation (RoI) */ 
-      PRIMITIVE_SETTER_AND_GETTER( float, m_isBlindReconstruction, setBlindReconstruction, blindReconstruction );
+      PRIMITIVE_SETTER_AND_GETTER( int, m_isBlindReconstruction, setBlindReconstruction, blindReconstruction );
 
     private:
       bool m_isBlindReconstruction;

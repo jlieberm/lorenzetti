@@ -86,6 +86,7 @@ add_subdirectory( reconstruction/calorimeter/CaloCellBuilder )
 add_subdirectory( reconstruction/calorimeter/CaloClusterBuilder )
 add_subdirectory( reconstruction/calorimeter/CaloRingsBuilder )
 add_subdirectory( reconstruction/io/RootStreamBuilder )
+add_subdirectory( reconstruction/io/ConditionsBuilder )
 add_subdirectory( reconstruction/physics/EgammaBuilder )
 add_subdirectory( reconstruction/reco )
 
@@ -118,6 +119,7 @@ add_library(lorenzetti SHARED
   $<TARGET_OBJECTS:CaloClusterBuilder>
   $<TARGET_OBJECTS:CaloRingsBuilder>
   $<TARGET_OBJECTS:RootStreamBuilder>
+  $<TARGET_OBJECTS:ConditionsBuilder>
   $<TARGET_OBJECTS:EgammaBuilder>
   $<TARGET_OBJECTS:GenKernel>
   $<TARGET_OBJECTS:filters>
